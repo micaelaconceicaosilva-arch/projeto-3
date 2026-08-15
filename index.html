@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hub de Estudos - Protótipo com Teste</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: #f8fafc;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+      min-height: 100vh;
+    }
+
+    .app-container {
+      width: 100%;
+      max-width: 420px;
+      background: #ffffff;
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+      padding: 20px;
+      border: 1px solid #e2e8f0;
+      margin-bottom: 20px;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 16px;
+    }
+
+    header h1 {
+      font-size: 1.4rem;
+      color: #1e3a8a;
+    }
+
+    header p {
+      font-size: 0.85rem;
+      color: #64748b;
+      margin-top: 4px;
+    }
+
+    .feedback-banner {
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-radius: 12px;
+      padding: 12px;
+      margin-bottom: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .feedback-banner span {
+      font-size: 0.85rem;
+      color: #1e40af;
+      font-weight: 600;
+    }
+
+    .btn-test {
+      background: #2563eb;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn-test:hover {
+      background: #1d4ed8;
+    }
+
+    .form-card {
+      background: #f1f5f9;
+      border-radius: 12px;
+      padding: 14px;
+      margin-bottom: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      border: 1px solid #cbd5e1;
+    }
+
+    input, select {
+      padding: 9px;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      width: 100%;
+      background: #ffffff;
+      outline: none;
+    }
+
+    input:focus, select:focus {
+      border-color: #2563eb;
+    }
+
+    button.btn-add {
+      background-color: #2563eb;
+      color: white;
+      border: none;
+      padding: 10px;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    button.btn-add:hover {
+      background-color: #1d4ed8;
+    }
+
+    .mural-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .mural-header h2 {
+      font-size: 1rem;
+      color: #1e293b;
+    }
+
+    .hub-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .item-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-left: 5px solid #2563eb;
+      border-radius: 10px;
+      padding: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .item-card.video { border-left-color: #ef4444; }
+    .item-card.pdf { border-left-color: #f97316; }
+    .item-card.anotacao { border-left-color: #10b981; }
+
+    .item-details h4 {
+      font-size: 0.9rem;
+      color: #0f172a;
+      margin-bottom: 4px;
+    }
+
+    .badge {
+      font-size: 0.65rem;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-weight: bold;
+      text-transform: uppercase;
+      background: #e0e7ff;
+      color: #3730a3;
+    }
+
+    .item-link {
+      font-size: 0.8rem;
+      color: #2563eb;
+      text-decoration: none;
+      font-weight: 600;
+      display: inline-block;
+      margin-top: 6px;
+    }
+
+    .item-link:hover {
+      text-decoration: underline;
+    }
+
+    .btn-remove {
+      background: #fee2e2;
+      color: #dc2626;
+      border: none;
+      border-radius: 6px;
+      padding: 6px 10px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background 0.2s;
+    }
+
+    .btn-remove:hover {
+      background: #fca5a5;
+    }
+
+    footer {
+      text-align: center;
+      font-size: 0.85rem;
+      color: #64748b;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-container">
+    <header>
+      <h1>📂 Hub de Estudos</h1>
+      <p>Protótipo Validado em Teste de Usabilidade</p>
+    </header>
+
+    <div class="feedback-banner">
+      <span>📚 Total Salvo: <strong id="totalCount">0</strong> itens</span>
+      <button class="btn-test" onclick="mostrarPerguntas()">Perguntas de Teste</button>
+    </div>
+
+    <div class="form-card">
+      <input type="text" id="titulo" placeholder="Título (ex: Resumo de Biologia)">
+      <select id="materia">
+        <option value="Biologia">Biologia</option>
+        <option value="Matemática">Matemática</option>
+        <option value="História">História</option>
+      </select>
+      <select id="tipo">
+        <option value="video">Vídeo / Aula</option>
+        <option value="pdf">PDF / Google Drive</option>
+        <option value="anotacao">Foto de Lousa</option>
+      </select>
+      <input type="url" id="link" placeholder="Link do recurso (opcional)">
+      <button class="btn-add" onclick="adicionarItem()">Adicionar Recurso</button>
+    </div>
+
+    <div class="mural-header">
+      <h2>Mural de Materiais</h2>
+    </div>
+
+    <div class="hub-list" id="hubList"></div>
+  </div>
+
+  <footer>
+    Feito por Micaela
+  </footer>
+
+  <script>
+    let recursos = JSON.parse(localStorage.getItem('recursos_estudo')) || [
+      { titulo: "Aula de Genética - Conceitos", materia: "Biologia", tipo: "video", link: "https://youtube.com" }
+    ];
+
+    function salvarELender() {
+      localStorage.setItem('recursos_estudo', JSON.stringify(recursos));
+      renderizarItens();
+    }
+
+    function renderizarItens() {
+      const hubList = document.getElementById('hubList');
+      hubList.innerHTML = '';
+
+      recursos.forEach((item, index) => {
+        const card = document.createElement('div');
+        card.className = `item-card ${item.tipo}`;
+
+        const details = document.createElement('div');
+        details.className = 'item-details';
+
+        const h4 = document.createElement('h4');
+        h4.textContent = item.titulo;
+
+        const badge = document.createElement('span');
+        badge.className = 'badge';
+        badge.textContent = item.materia;
+
+        details.appendChild(h4);
+        details.appendChild(badge);
+
+        if (item.link) {
+          const br = document.createElement('br');
+          const a = document.createElement('a');
+          a.href = item.link;
+          a.target = '_blank';
+          a.rel = 'noopener noreferrer';
+          a.className = 'item-link';
+          a.textContent = '🔗 Abrir Recurso';
+          details.appendChild(br);
+          details.appendChild(a);
+        }
+
+        const btnRemove = document.createElement('button');
+        btnRemove.className = 'btn-remove';
+        btnRemove.textContent = 'Excluir';
+        btnRemove.onclick = () => removerItem(index);
+
+        card.appendChild(details);
+        card.appendChild(btnRemove);
+        hubList.appendChild(card);
+      });
+
+      document.getElementById('totalCount').innerText = recursos.length;
+    }
+
+    function adicionarItem() {
+      const tituloInput = document.getElementById('titulo');
+      const materiaSelect = document.getElementById('materia');
+      const tipoSelect = document.getElementById('tipo');
+      const linkInput = document.getElementById('link');
+
+      const titulo = tituloInput.value.trim();
+
+      if (!titulo) {
+        alert("Digite o título do recurso!");
+        return;
+      }
+
+      recursos.push({
+        titulo: titulo,
+        materia: materiaSelect.value,
+        tipo: tipoSelect.value,
+        link: linkInput.value.trim()
+      });
+
+      tituloInput.value = '';
+      linkInput.value = '';
+      salvarELender();
+    }
+
+    function removerItem(index) {
+      recursos.splice(index, 1);
+      salvarELender();
+    }
+
+    function mostrarPerguntas() {
+      alert(
+        "🧪 PERGUNTAS DE TESTE\n\n" +
+        "1. O que você acha que este aplicativo faz?\n\n" +
+        "2. Você consegue diferenciar vídeos, PDFs e anotações?\n\n" +
+        "3. Como você faria para adicionar um novo material de História?\n\n" +
+        "4. Isso resolveria a bagunça de arquivos nos seus estudos?\n\n" +
+        "5. O que acontece ao clicar em 'Abrir Recurso'?\n\n" +
+        "6. Você usaria esse aplicativo para estudar?\n\n" +
+        "7. O que você mudaria ou acrescentaria?"
+      );
+    }
+
+    // Suporte para adicionar apertando "Enter"
+    document.getElementById('titulo').addEventListener('keydown', function(event) {
+      if (event.key === 'Enter') {
+        adicionarItem();
+      }
+    });
+
+    // Inicialização da página
+    renderizarItens();
+  </script>
+
+</body>
+</html>
